@@ -1,24 +1,43 @@
-# Aiogram 3 New Template (sqlite db)
+# Registration bot
 
-### 1. Create virtual environment and install packages
-Windows
-```shell
-python -m venv venv && venv\Scripts\activate && pip install -r requirements.txt
-```
+Bu bot sizni Sifat o`quv markaziga ruyxatdan utkazadi. buning uchun ```/regist``` deb yozsangiz kifoya!!!
 
-Linux/Mac
-```shell
-python3 -m venv venv && source venv/bin/activate && pip3 install -r requirements.txt
-```
+## Xususiyatlar
+- ```/menu``` asosiy menuni chiqarib beradi.
+- ```/regist``` ro`yxatdan utkazadi.
 
-### 2. Create .env file and copy all variables from .env_example to it and customize your self (if needed)
+## Texnologiyalar
+- Python 3.7 yoki undan yuqori versiya
+- aiogram kutubxonasi
 
-### 3. Run app.py
-Windows
-```shell
-python app.py
-```
-Linux/Mac
-```shell
-python3 app.py
-```
+## O'rnatish
+1. GitHub repozitoriyasini klonlang:
+    ```bash
+    git clone https://github.com/Rakhmatulloyev/registratsiya-boti.git
+    ```
+
+2. Zaruriy kutubxonalarni o'rnating:
+    ```bash
+    pip install -r requirements.txt
+    ```
+3. `.env` faylini yaratib, quyidagi ma'lumotlarni qo'shing:
+    ```bash
+    BOT_TOKEN=your-telegram-bot-token
+    CHANNELS=your-channels-id
+    ADMINS=your-id
+    ```
+
+## Filtrlar
+- `admin.py`: Adminlar uchun maxsus funksiyalarni filtrlaydigan kodlar joylashgan.
+- `check_sub_channel.py`: Foydalanuvchining kerakli kanalga obuna bo‘lganligini tekshiruvchi kodlar.
+
+## Klaviatura tugmalari
+- `admin_keyboard.py`: Bot interfeysida adminlar uchun klaviatura tugmalari sozlanadi.
+
+## Menyu buyruqlari
+- `set_bot_commands.py`: Telegram bot menyusidagi buyruqlarni o'rnatish uchun skript.
+
+## Ishga tushurish
+Botni quyidagi buyruq orqali ishga tushiring:
+```bash
+python bot.py
