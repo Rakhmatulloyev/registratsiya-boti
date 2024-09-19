@@ -194,9 +194,16 @@ async def send_advert(message:Message,state:FSMContext):
     await message.answer(f"Reklama {count}ta foydalanuvchiga yuborildi")
     await state.clear()
 
-@dp.message(Command("about"))
+@dp.message(Command("admin"))
 async def is_admin(message:Message):
     await message.answer(text="Admin menu",reply_markup=admin_keyboard.admin_button)
+
+
+
+@dp.message(Command("help"))
+async def is_admin(message:Message):
+    await message.answer(text="/start - botni ishga tushurish \n/help - botdan yorddam so`rash\n/admin - admin panelni chiqaradi \n/menu - menyuni chiqaradi \n/xabar - adminga xabar yuborish")
+
 
 @dp.message(Command("regist"))
 async def command_start_handler(message: Message,state:FSMContext) -> None:
@@ -309,6 +316,63 @@ async def get_address(message:Message,state:FSMContext):
     text = f"Siz muvaffaqiyatli tarzda ro'yhatdan o'tdingiz🎉"
     await message.reply(text=text)
 
+
+
+from help_stt import Help
+
+
+
+
+# Xabar yuborish komandasi
+@dp.message(Command("xabar"))
+async def help_commands(message: Message, state: FSMContext):
+    await message.answer("Xabaringizni yozib ✍🏻 \nMurojatingiz 👤 adminga boradi !")
+    await state.set_state(Help.help)
+    
+
+# Foydalanuvchining adminga yozgan xabarini jo'natish
+@dp.message(Help.help)
+async def send_advert(message: Message, state: FSMContext):
+    try:
+        # await bot.send_message(ADMINS[0],"📌 Yangi xabar")
+        msg = f"{message.from_user.id} 📌 \n\nYangi xabar\n\n"
+        msg += f"{message.text}"
+        await bot.send_message(ADMINS[0], msg,parse_mode="html")
+        await message.answer("Xabaringiz adminga yetkazildi")
+        await state.clear()
+        
+    except:
+        
+        await message.answer("Faqat matn ko'rinishidagi xabarlarni yubora olasiz.")
+        await message.answer("Marhamat adminga xabaringizni qoldiring.")
+
+
+@dp.message(F.reply_to_message, IsBotAdminFilter(ADMINS))
+async def is_admin(message: Message):
+    try:    
+            u_id = message.reply_to_message.text.split()[0]
+            print(u_id, "*************")
+            text = message.text
+            await bot.send_message(int(u_id), text)
+            await message.answer("xabaringiz yetkazildi. ")
+    except:
+        await message.answer("Nimadir xato bo'ldi")
+
+def setup_middlewares(dispatcher: Dispatcher, bot: Bot) -> None:
+    from middlewares.throttling import ThrottlingMiddleware
+    dispatcher.message.middleware(ThrottlingMiddleware(slow_mode_delay=0.5))
+
+async def main() -> None:
+    global bot, db
+    bot = Bot(TOKEN)
+    db = Database(path_to_db="main.db")
+    await set_default_commands(bot)
+    setup_middlewares(dispatcher=dp, bot=bot)
+    await dp.start_polling(bot)
+
+if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO, stream=sys.stdout)
+    asyncio.run(main())\
 
 
 
